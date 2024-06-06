@@ -113,20 +113,168 @@ Bei einem 64-Bit-Betriebssystem muss jede Speicheradresse 64 Bit breit sein.
 ![Disketten Größen](<Bilder/2.3.6.2 Disketten Größen.png>)
 
 ### Festplattenlaufwerke (HDD)
-- Funktionsweise: Magnetplatten funktionieren ähnlich wie Magnetbänder oder Disketten, wobei der Schreib-/Lesekopf über der Platte schwebt. Der Luftwirbel, der durch die Rotation der Platte entsteht, sorgt dafür, dass der Schreib-/Lesekopf die Platte im Datenbereich niemals berührt.
+- Funktionsweise: Magnetplatten funktionieren ähnlich wie Magnetbänder oder Disketten, wobei der Schreib-/Lesekopf über der Platte schwebt. Der Luftwirbel, der durch die Rotation der Platte entsteht, sorgt dafür, dass der Schreib-/Lesekopf die Platte im Datenbereich niemals berührt. Falls die Platte ausgeschaltet wird und die Umdrehung stoppt, fährt der Schreib-/Lesekopf auf eine Parkposition. *(Auf der Parkposition sind keine Daten gespeichert)*
 
 ![Aufbau Standard-Festplatte](<Bilder/2.3.6.2 Aufbau Standard-Festplatte.png>)
 
 - Vorteile: Durch die hohe Rotationsrate bieten Festplatten kurze Zugriffszeiten und hohe Übertragungsraten.
-- Entwicklung: Festplattenkapazitäten haben sich von anfangs einigen Megabytes auf heute über 10 Terabyte pro Platte gesteigert. Die Schnittstellen haben ebenfalls eine Evolution durchlaufen.
-- Technologische Fortschritte: Technologien wie der GMR-Effekt (Giant Magneto Resistance) und Perpendicular Magnetic Recording haben dazu beigetragen, die Speicherkapazitäten weiter zu steigern.
-- Ausblick: Zukünftige Technologien wie Heat Assisted Magnetic Recording (HAMR) und Microwave Assisted Magnetic Recording (MAMR) sollen noch höhere Kapazitäten ermöglichen, jedoch werden Kapazitäten von über 20 Terabyte erst in einigen Jahren erwartet.
+- Entwicklung: Festplattenkapazitäten haben sich von anfangs einigen Megabytes auf heute über 10 Terabyte pro Platte gesteigert. Die Schnittstellen haben ebenfalls eine Evolution durchlaufen, anfangs MFM, dann paralell (IDE/SCSI) und schlussendlich zu Serial ATA (SATA) und SAS.
+- Giant Magneto Resistance: Bis zur Entdeckung des GMR-Effekts (Giant Magneto Resistance) war der Speicherzuwachs stagnierend. Mit dem GMR-Effekt konnten die Speicherdichten weiter erhöht werden. 
+- Shingled Magnetic Recording: 
+    - Prinzip:
+        - Schreibkopfgröße: Der Schreibkopf ist physikalisch größer als der Lesekopf. Dies führt dazu, dass beim Schreiben die benachbarten Spuren teilweise überschrieben werden.
+        - Überlappendes Schreiben: Bei SMR werden die Magnetzonen absichtlich überlappend geschrieben. Der nachfolgende Schreibvorgang überschreibt teilweise die vorherigen Magnetzonen, was Platz spart und die Datendichte erhöht.
+    - Vorteile:
+        -  Erhöhte Speicherkapazität: Durch das Überlappen der Spuren können mehr Daten auf derselben Plattenfläche gespeichert werden, was zu einer höheren Speicherdichte führt.
+    - Nachteile:
+        - Komplexes Schreiben: Da benachbarte Spuren überschrieben werden, müssen beim Ändern von Daten größere Datenblöcke erneut geschrieben werden.
+        - Verwaltungsaufwand: Es muss ein zusätzlicher Verwaltungsaufwand betrieben werden, um sicherzustellen, dass bei einer Änderung der Daten der gesamte betroffene Block neu geschrieben wird.
+    - Technische Details:
+        - Lücken: Um die vollständige Überschreibung der gesamten Platte zu vermeiden, werden in regelmäßigen Abständen Lücken freigelassen.
+        - Schreibvorgänge: Bei einer Datenänderung muss der gesamte Block bis zur nächsten Lücke zuerst ausgelesen und danach wieder komplett neu geschrieben werden.
+
+![HDD Herkömmliche Aufzeichnung](<Bilder/2.3.6.2 HDD Herkömmliche Aufzeichnung.png>)
+
+![HDD Shingled Magnetic Recording](<Bilder/2.3.6.2 HDD Shingled Magnetic Recording.png>)
+
+- Ausblick:
+    - Heat Assisted Magnetic Recording (HAMR): 
+        --> Mithilfe eines Lasers wird die Magnetschicht erhitzt, wodurch die notwendige magnetische Feldstärke reduziert wird und damit der Schreibkopf kleiner gemacht werden kann.
+    - Microwave Assisted Magnetic Recording (MAMR):
+        --> Mithilfe von elekromagnetischer Mikrowellenstrahlung wird die Magnetschicht "magnetisch aufgeweicht", wodurch die notwendige magnetische Feldstärke reduziert wird und damit der Schreibkopf kleiner gemacht werden kann.
+
+## 2.4 Architekturen
+
+### 2.4.1 Von-Neumann-Architektur
+- Grundkonzept:
+    - Ein einziges Bussystem: Es gibt nur ein Bussystem, das für die Übertragung aller Datenarten verwendet wird. Dies umfasst sowohl die Programmdaten als auch die Programmbefehle.
+- Speicher: 
+    - Der gleiche Speicher wird für Daten und Programme genutzt, was bedeutet, dass der Speicher und der Bus abwechselnd für beide genutzt werden müssen.
+- Vorteile:
+    - Einheitlicher Speicher: Es wird nur eine "Art" von Arbeitsspeicher benötigt, der sowohl für Daten als auch für Programme zuständig ist. Dies vereinfacht die Speicherverwaltung und reduziert die Kosten.
+- Nachteile:
+    - Bus- und Speicherüberlastung: Da der Bus und der Speicher sowohl für Daten als auch für Programme verwendet werden, kann es zu Engpässen kommen, wenn beide gleichzeitig benötigt werden.
+    - Cache-Trashing: Mit der Einführung von Caches in den 90er-Jahren entstand das Problem, dass Daten und Programmbefehle sich gegenseitig aus dem Cache verdrängten. Dieses Problem wurde teilweise durch die Einführung von getrennten Caches für Daten und Programmbefehle gelöst, was eher einer Harvard-Architektur entspricht.
+    - Selbstmodifizierender Code: Ein großer Nachteil der Von-Neumann-Architektur ist die Möglichkeit, dass Software ihren eigenen Programmcode ändern kann. Dies kann von bösartiger Software ausgenutzt werden, um sich auszubreiten.
+
+![Von-Neumann-Architektur](<Bilder/2.4.1 Von-Neumann-Architektur.png>)
+
+### 2.4.2 Harvard-Architektur
+- Grundkonzept:
+    - Getrennte Speicher und Busse: Die Harvard-Architektur zeichnet sich durch physikalisch getrennte Speicher- und Bussysteme für Programmcode und Daten aus. 
+- Vorteile:
+    - Schneller Speicherzugriff: Durch die Trennung der Busse für Programmcode und Daten kann der Prozessor gleichzeitig auf beide Arten von Speicher zugreifen. Dies führt zu einer theoretischen Verdopplung der Zugriffsgeschwindigkeit im Vergleich zur Von-Neumann-Architektur.
+    -  Sicherheit: Ein laufendes Programm kann seinen eigenen Programmcode *fast* nicht überschreiben, was das Risiko von bösartigen Softwaremanipulationen reduziert. Der Programmspeicher ist während der normalen Programmausführung nur lesbar und oft in ROM (Read-Only Memory) gespeichert, insbesondere bei eingebetteten Systemen.
 
 
-## 2.4
-## 2.5
-## 3.3.1
-## 3.3.7
+![Harvard-Architektur](<Bilder/2.4.2 Harvard-Architektur.png>)
+
+## 2.5 PC-Bussyteme
+
+### 2.5.1 ISA-Bus *(Industry Standard Architecture)*
+
+- Einführung und Entwicklung:
+    - Entwickelt von IBM in den 1980er-Jahren.
+    - Ursprünglich als XT-BUS mit 8-Bit-Datenbusbreite und 4,7 MHz.
+    - Später erweitert auf 16 Bit mit einer Taktfrequenz von 8,33 MHz (Übertragungsrate 16,6 MB/s).
+- Eigenschaften:
+    - Der gesamte Systembus des Computers ist direkt auf den ISA-Stecker geführt.
+    - Ein Entwurf zur Erweiterung auf 32 Bit (EISA) wurde nicht erfolgreich umgesetzt.
+- Verwendung:
+    - Auch heute noch in Industrieanwendungen verwendet, oft mit zusätzlicher ISA-Hardware-Emulation, um moderne Systeme nicht mit niedrigen Geschwindigkeiten zu betreiben.
+
+![ISA-Bus](<Bilder/2.5.1 ISA-Bus.png>)
+
+### 2.5.2 PCI-Bus *(Peripheral Component Interconnect)*
+
+- Einführung und Entwicklung:
+    - Mitte der 1990er-Jahre von einem Konsortium mehrerer Firmen entwickelt.
+    - **Keine** direkte Verbindung mehr zur CPU, sondern über den Chipsatz des Prozessors.
+- Eigenschaften:
+    - Daten und Adressleitungen werden gemultiplexed.
+    - Daten- und Adressbreite: 32 Bit.
+    - Taktfrequenz: 33 MHz.
+    - Übertragungsrate: Maximal 133 MB/s im Burst-Modus.
+- Erweiterungen:
+    - 64-Bit-Variante (PCI-X) für Serverboards, die Taktfrequenz wurde erhöht und QDR eingeführt, wodurch Übertragungsraten bis zu 4,2 GB/s erreicht wurden.
+
+![PCI-Bus](<Bilder/2.5.2 PCI-Bus.png>)
+
+### 2.5.3 PCIe-Bus *(PCI Express)*
+
+- Problematik paralleler Bussysteme:
+    - Signale müssen auf allen Leitungen gleich lang unterwegs sein, was durch Mäander auf Leiterplatten erreicht wurde.
+    - Physikalische Grenzen bei parallelen Konzepten wurden erreicht.
+- Eigenschaften:
+    - Serielle Punkt-zu-Punkt-Verbindung (Lane) ersetzt den eigentlichen BUS.
+    - Taktfrequenz: ca. 2,5 GHz (PCIe-1), was eine Verdopplung der Übertragungsrate von 32-Bit-PCI ergibt.
+    - Serielle Taktübertragung erfolgt mittels PLL (Phase-Locked Loop).
+    - Mehrere Lanes können zusammengeschaltet werden (bis zu 16 Lanes), ohne eine parallele Übertragung zu bilden.
+- Vorteile:
+    - Störsichere Übertragung durch differenzielle Paare.
+    - Für Software unsichtbar, da die parallel-seriell-parallel-Wandlung von der Hardware übernommen wird.
+
+![PCIe-Bus](<Bilder/2.5.3 PCIe-Bus.png>)
+
+## 3.3.1 Rechenwerk Addition
+
+### 3.3.1.1 Halbaddierer
+
+**Addition von einstelligen Dualzahlen**
+
+![Einzelbauteile](<Bilder/3.3.1.1 Einzelbauteile.png>)
+
+![Standardelemente](<Bilder/3.3.1.1 Standardelemente.png>)
+
+### 3.3.1.2 Volladdierer
+
+**Addition von Dualzahlen mit Übertrag**
+
+**Addition von zwei einstelligen Dualzahlen mit einem Übertrag**
+
+![Wahrheitswertetabelle](<Bilder/3.3.1.2 Wahrheitswertetabelle.png>)
+
+![Realisierung durch 2 Halbaddierer und Oder-Gatter](<Bilder/3.3.1.2 Realisierung durch 2 Halbaddierer und Oder-Gatter.png>)
+
+### 3.3.1.3 Paralleladdierwerk
+
+**Addition von Dualzahlen mit mehreren Stellen**
+
+
+**Ablauf:** Um eine komplette Addition zweier Register durchzuführen:
+1. Summanden stehen in zwei Registern mit Bitbreite N.
+2. Steuersignal "Addition" aktiviert das Paralleladdierwerk.
+3. Mit der nächsten Taktflanke wird das Ergebnis in das A-Register übernommen.
+
+![Paralleladdierwerk](<Bilder/3.3.1.3 Paralleladdierwerk.png>)
+
+**Ripple-Carry-Addition:** Die Addition erfolgt bitweise von LSB (Least Significant Bit) zu MSB (Most Significant Bit). Der Übertrag wird von einem Bit zum nächsten weitergereicht.  
+    `--> Hierbei wird pro Dualzahl ein Volladdierer benötigt.`  
+***ACHTUNG*** *Im ungünstigsten Fall muss ein Übertrag durch alle Bits gereicht werden, was zu einer langen Verzögerung führt.*
+
+![Ripple-Carry-Addition](<Bilder/3.3.1.3 Ripple-Carry-Addition.png>)
+
+**Carry-Lookahead-Addition:** Die Überträge werden parallel berechnet, was zu einer schnelleren Addition führt.  
+
+![Carry-Lookahead-Addition](<Bilder/3.3.1.3 Carry-Lookahead-Addition.png>)
+
+### 3.3.1.4 Inkrement
+
+**Beschreibung:** Inkrementieren ist eine häufig benötigte arithmetische Funktion, z.B. bei Schleifenberechnungen.
+
+**Optimierung:** 
+- Addition mit 1, wobei fast alle Stellen des einen Summanden null sind.
+- Pro Binärstelle (außer LSB) kann ein Volladdierer durch einen Halbaddierer ersetzt werden.
+
+![Inkrementator](<Bilder/3.3.1.4 Inkrementator.png>)
+
+## 3.3.7 Faktor 256 hoch x
+**Binäre Schiebeoperation**
+Die Multiplikation mit 256 in einer binären Zahl entspricht einer Schiebeoperation (Shift-Operation) um 8 Bit nach links.  
+`--> 256 = 2^8`
+- Optimierung durch Compiler: Der Compiler erkennt die Shift-Operation um 1-Byte und führt keine Multiplikation durch, sondern greift direkt auf die Speicheradresse um 1-Byte weiter zu.
+
+
 ## 3.3.9
 ## 4.4
 ## 5.2.2.1
