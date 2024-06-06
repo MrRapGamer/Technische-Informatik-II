@@ -1,0 +1,13 @@
+!SESSION 2024-05-10 11:01:01.878 -----------------------------------------------
+eclipse.buildId=4.31.0.20240307-1200
+java.version=17.0.10
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=de_DE
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/juliangardeike/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.java.product -keyring /Users/juliangardeike/.eclipse_keyring
+
+!ENTRY ch.qos.logback.classic 1 0 2024-05-10 11:01:02.930
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2024-05-10 11:01:28.491
+!MESSAGE Logback config file: /Users/juliangardeike/Library/CloudStorage/OneDrive-LogicalisGmbH/Studium/Betriebsysteme/Programmuebungen/03/Deadlocks/3.4/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.6.0.20240217-1525.xml

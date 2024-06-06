@@ -1,0 +1,24 @@
+
+import BSsync.Semaphore;
+import util.Consumer;
+import util.Producer;
+import util.Consumer;
+import util.RingBuffer;
+
+public class Main {
+    public static void main(String[] args) {
+        RingBuffer buffer = new RingBuffer(5);
+        Semaphore emptySem = new Semaphore(5);
+        Semaphore fullSem = new Semaphore(0);
+        Producer producer1 = new Producer(buffer, fullSem, emptySem, "producer 1");
+        Producer producer2 = new Producer(buffer, fullSem, emptySem, "producer 2");
+        Consumer consumer1 = new Consumer(buffer, fullSem, emptySem, "consumer 1");
+        Consumer consumer2 = new Consumer(buffer, fullSem, emptySem, "consumer 2");
+
+        producer1.start();
+        producer2.start();
+        consumer1.start();
+        consumer2.start();
+        System.out.println("End of main thread.");
+    }
+}

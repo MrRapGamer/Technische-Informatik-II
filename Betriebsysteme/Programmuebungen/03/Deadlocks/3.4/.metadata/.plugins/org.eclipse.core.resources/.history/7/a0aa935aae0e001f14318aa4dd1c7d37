@@ -1,0 +1,26 @@
+package util;
+import BSsync.Semaphore;
+
+public class Consumer extends Thread {
+    private RingBuffer buffer;
+    private Semaphore emptySem;
+    private Semaphore fullSem;
+    private String name;
+
+    public Consumer(RingBuffer buffer, Semaphore emptySem, Semaphore fullSem, String name) {
+        this.buffer = buffer;
+        this.emptySem = emptySem;
+        this.fullSem = fullSem;
+        this.name = name;
+
+    }
+
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            fullSem.down(); // wait if buffer is empty
+            int item = buffer.removeItem();
+            emptySem.up(); // Benachrichtige Erzeuger, dass Elemente entfernt wurden
+            System.out.println(name + "Consumed: " + item);
+        }
+    }
+}

@@ -1,0 +1,5 @@
+package BSsync;
+
+public class Semaphore {
+
+}

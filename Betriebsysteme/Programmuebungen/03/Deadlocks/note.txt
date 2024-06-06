@@ -1,0 +1,2 @@
+Aufgabe 3.3 und 3.4 befinden sich hier /Users/juliangardeike/eclipse-workspace/Deadlock3_3
+bitte mit eclipse öffnen, da VSCode auf dem MAC spinnt

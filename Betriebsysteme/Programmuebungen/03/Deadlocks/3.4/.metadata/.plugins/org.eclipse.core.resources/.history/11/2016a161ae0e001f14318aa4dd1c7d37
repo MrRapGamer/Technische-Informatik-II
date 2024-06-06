@@ -1,0 +1,30 @@
+
+package util;
+
+import BSsync.Semaphore;
+
+
+public class Producer extends Thread {
+    private RingBuffer buffer;
+    private Semaphore emptySem;
+    private Semaphore fullSem;
+    private String name;
+
+    public Producer(RingBuffer buffer, Semaphore emptySem, Semaphore fullSem, String name) {
+        this.buffer = buffer;
+        this.emptySem = emptySem;
+        this.fullSem = fullSem;
+        this.name = name;
+    }
+
+    public void run() {
+        for (int i = 0; i < 100; i++) {
+            int item = ; 
+            emptySem.down(); // wait till buffer is full
+            buffer.insertItem(item);
+            fullSem.up(); // ping consumer, element is added
+            System.out.println(name + " produced: " + item);
+        }
+        
+    }
+}
