@@ -273,11 +273,62 @@ Bei einem 64-Bit-Betriebssystem muss jede Speicheradresse 64 Bit breit sein.
 Die Multiplikation mit 256 in einer binären Zahl entspricht einer Schiebeoperation (Shift-Operation) um 8 Bit nach links.  
 `--> 256 = 2^8`
 - Optimierung durch Compiler: Der Compiler erkennt die Shift-Operation um 1-Byte und führt keine Multiplikation durch, sondern greift direkt auf die Speicheradresse um 1-Byte weiter zu.
+--> Dadurch wird die Zahl ohne Rechenoperation der ALU um Faktor 256 verkleinert.
+`Alle Faktoren um 256 hoch x können ersetzt werden durch eine Verschiebung um x Byte.`
+
+## 3.3.9 SISD/SIMD *(Single Instruction Single Data / Single Instruction Multiple Data)*
+
+**Traditionelle SISD-Architektur**:
+- Eine Instruktion wird auf ein ganzes Register angewendet.
+**Problem:** heutige Register sind 64-Bit breit, was zu einer Verschwendung von Rechenleistung führt, wenn nur 8-Bit Daten verarbeitet werden.
+**Lösung:** SIMD-Architektur:
+- Aufteilung des Registers in mehrere Teile, die gleichzeitig verarbeitet werden können. *(bis zu 8x 8-Bit Daten)*
+
+![SISD/SIMD](<Bilder/3.3.9 SISD-SIMD.png>)
+
+## 4.4 Burst-Mode
+**Motivation:** Durch aufwendige statistische Erforschung von Speicherzugriffen wurde in den 1990er Jahren bemerkt, dass eine Software oft auch die Daten der Nachfolgeadressen des gerade 
+angeforderten Datums benötigt.
+
+**Burst-Mode:** Ein Burst ist eine Übertragung von gleich mehreren Datenwörtern direkt hintereinander, ohne jedes Mal die Adresse mit zu übertragen.  
+
+![Burst-Mode](<Bilder/4.4 Burst-Mode.png>)
+
+- Die Datenbusbreiten der ersten CPUs mit Burstübertragung lagen bei 32 Bit (i486). Die Größe 
+einer internen Cacheline lag damals bei 16 Bytes. Die ersten Burstlängen lagen deshalb bei 4 
+32-Bit-Zugriffen direkt hintereinander. Aktuelle Prozessoren mit 64-Bit-Bus haben interne 
+Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hintereinander. 
+- **RAM:** **Großer** Vorteil beim Zugriff auf DRAM-Speicher, da die verschachtelte RAS-CAS-Addressierung eine viel kürzere Zugriffszeit nur auf direkt aufeinanderfolgende Adressen ermöglicht.
+- **PCI-Bus:** Kann auch im Burst-Mode betrieben werden, was hier ein starker Vorteil ist, da Daten- und Adressbus gemultiplexed sind. Die Burstlänge ist nicht begrenzt. *(Man kann mehrere Megabyte direkt hintereinander übertragen)*
+
+## 5.2.2.1 Standard-DRAM
+
+- **Grundprinzip**
+    - DRAM (Dynamic Random Access Memory) basiert auf einem kleinen Kondensator, der den Wert eines Bits in Form einer elektrischen Ladung speichert.
+    - Im Vergleich zu SRAM benötigt DRAM nur einen Transistor, um ein Bit zu speichern.
+- **Abbildung: DRAM-MOSFET-Zelle**
+    - Die Größe des Kondensators einer DRAM-Zelle liegt heute im Attofarad-Bereich.
+    - Der Kondensator entlädt sich von selbst durch Leckströme innerhalb von Millisekunden.
+- **Refresh-Zyklus**
+    - Um den Speicherinhalt zu erhalten, muss bei jedem Bit, bevor die Ladung verloren geht, der Inhalt ausgelesen, zwischengespeichert und zurückgeschrieben werden.
+    - Dieser Vorgang wird Refresh genannt und zyklisch für den gesamten Speicher durchgeführt.
+- **Organisation des Speicherarrays**
+    - DRAM-Speicher werden in einem zweidimensionalen Speicherfeld organisiert, wobei die Wortleitung und die Bitleitungen vom Adressdecoder in zwei Teile geteilt werden.
+
+![DRAM-Array](<Bilder/5.2.2.1 DRAM-Array.png>)
+
+- Adressierung
+    - Die Adressierung des Speicherarrays erfolgt in zwei Schritten: RAS (Row-Address-Select, Zeilenadresse) und CAS (Column Address-Select, Spaltenadresse).
+    - Die wahlfreie Zugriffszeit beträgt ca. 40-60 ns, was einer maximalen Zugriffstaktfrequenz von 16-25 MHz entspricht.
+- RAS-CAS-Adressierung
+    - Bei einem Adressierungsvorgang, bei dem nur eine der beiden Adressteile verändert wird, erfolgt die Adressierung etwa doppelt so schnell (20-30 ns).
+
+![RAS-CAS-Adressierung](<Bilder/5.2.2.1 RAS-CAS-Adressierung.png>)
 
 
-## 3.3.9
-## 4.4
-## 5.2.2.1
+
+
+
 ## 5.2.2.3
 ## 5.3.4.6
 ## 6.3.2.4
