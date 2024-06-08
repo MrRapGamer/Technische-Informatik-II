@@ -478,7 +478,46 @@ Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hin
     - Einführung: CAT3 Kabel mit RJ45 Steckern, sternförmige Verbindungen.
     - Übertragung: ±2.5 V, symmetrisch, Fullduplex, 2 Adernpaare.
     - Übertrager: An Kabelenden, oft in Netzwerkbuchsen integriert.
-    - Umstieg auf 100 MBit/s: Durch CAT5 Kabel, verbesserte Codierung, 3 Spannungspegel (PAM-3), Frequenzbandbreite 31,25 MHz.
+    - Umstieg auf 100 MBit/s: Durch CAT5 Kabel, verbesserte Codierung, 3 Spannungspegel (PAM-3) (+1V/ 0V/ -1V), Frequenzbandbreite 31,25 MHz. *(Immer noch 2 Adernpaare)*
+
+![Twisted Pair 2x2](<Bilder/6.3.9.1 Twisted Pair 2x2.png>)
+
+![Ethernet Buchse mit Übertrager](<Bilder/6.3.9.1 Ethernet Buchse mit Übertrager.png>)
+
+![RJ 45 Übertrager](<Bilder/6.3.9.1 RJ 45 Übertrager.png>)
+
+- **Twisted Pair 4x2**
+    - 1 GBit/s Übertragung: Nutzung aller 4 Adernpaare, Fullduplex auf allen Aderpaaren.
+    - Echokompensation: An beiden Enden des Kabels.
+    - Signalpegel: 5 Pegel (PAM-5), Frequenzbandbreite 62,5 MHz.(+1 V/+0,5 V/0 V/-0,5 V/-1 V)
+    - Höhere Geschwindigkeiten: 2.5/5/10 Gbit/s mit 16 Pegeln (PAM-16). 
+
+![Vergleich Ethernet 100MBit/s und 1 GBit/s](<Bilder/6.3.9.1 Vergleich Ethernet 100MBit und 1 GBit.png>)
+
+- **ix-Industrial**
+    - Neue Steckverbinder: Einführung 2018, kompakter als RJ45, für industrielle Anwendungen.
+    - PoE (Power over Ethernet): Versorgung von Clients mit Energie über Datenleitungen
+
+![ix-Industrial](<Bilder/6.3.9.1 ix-Industrial.png>)
+
+- **Twisted Pair 1x2**
+    - Single Pair Ethernet (SPE): Verwendung eines Adernpaares, CAT7 Kabel, bis zu 1 Gbit/s, maximale Länge 15-40 m.
+    - PoDL (Power over Data Line): Gleichzeitige Energieversorgung, Spannungen 12-48 V, Leistung 0,5-50 W.
+
+![Single Pair Ethernet](<Bilder/6.3.9.1 Single Pair Ethernet.png>)
+
+
+- **Glasfaser**
+    - Parallel zu Kupferkabeln: Standards für optische Übertragung ab 1992.
+    - Glasfasertypen: Monomode, Multimode, Gradientenindex.
+    - Anwendungen: Multimode für kurze Distanzen, Monomode für längere Distanzen.
+    - Lichtwellenlängen: 850 nm-1550 nm, meist Infrarot.
+    - Vorteile: Nahezu perfekte Signalübertragung bei Monomode, komplexere Technik.
+    - Medienkonverter: Einfacher Wechsel von 1 GBit/s-Kupferleitungen auf Glasfaserleitungen.
+
+![Glasfaser](<Bilder/6.3.9.1 Glasfaser.png>)
+
+
 
 ## 7.2.1
 ## 7.2.2
