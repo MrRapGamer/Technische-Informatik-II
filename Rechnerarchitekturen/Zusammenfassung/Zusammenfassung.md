@@ -455,7 +455,12 @@ Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hin
     - Verwendung von 2 Leitungen für 2x 10 GBit/s
     - Kompatibilität mit USB 3.0 und USB 3.1
 
-## 6.3.9.1
+## 6.3.9.1 Drahtgebundene Netzwerke
+
+- **Allgemein**
+
+
+
 ## 7.2.1
 ## 7.2.2
 ## 7.3.3
