@@ -458,8 +458,27 @@ Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hin
 ## 6.3.9.1 Drahtgebundene Netzwerke
 
 - **Allgemein**
+    - Serielle Verbindungen: Physikalisch bedingt; parallele Verbindungen haben Laufzeit-Probleme.
+    - Historie: Verschiedene Netzwerke durch Ethernet ersetzt; industrielle Netzwerke wie RS485 bestehen noch.
+    - Galvanische Trennung: Notwendig bei langen Leitungen; Nutzung von Übertragern für gleichanteilsfreie Bitmuster.
+
+- **Koaxial**
+    - Verwendung: In den 1990er-Jahren; alle Teilnehmer eines Netzwerks über ein Koaxial-Kabel verbunden.
+    - **Notwendige** Abschlusswiderstände: 50 Ω an beiden Enden des Netzwerks.
+    - **Probleme:** Fehleranfällig, Kommunikation bei Problemen unterbrochen. 
+    `--> Single Point of Failure` *(einzelnes Kabelbruch führt zum Ausfall des gesamten Netzwerks)*
+    - Übertragungsrate: 10 MBit/s, Halbduplex, maximale Länge 185 m.
+    - Signalpegel: 0 und -2.2 V mit Manchester-Kodierung; Kollisionserkennung durch tiefere Pegel.
+    - Frequenzbandbreite: Ca. 10 MHz
+
+![Koax Ethernet](<Bilder/6.3.9.1 Koax Ethernet.png>)
 
 
+- **Twisted Pair 2x2**
+    - Einführung: CAT3 Kabel mit RJ45 Steckern, sternförmige Verbindungen.
+    - Übertragung: ±2.5 V, symmetrisch, Fullduplex, 2 Adernpaare.
+    - Übertrager: An Kabelenden, oft in Netzwerkbuchsen integriert.
+    - Umstieg auf 100 MBit/s: Durch CAT5 Kabel, verbesserte Codierung, 3 Spannungspegel (PAM-3), Frequenzbandbreite 31,25 MHz.
 
 ## 7.2.1
 ## 7.2.2
