@@ -517,9 +517,108 @@ Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hin
 
 ![Glasfaser](<Bilder/6.3.9.1 Glasfaser.png>)
 
+- **TOSLINK**
+    - Consumer-Audiotechnik: Optische S/PDIF Verbindung, rotes Licht (650 nm).
+    - Übertragungsrate: Deutlich unter 10 MBit/s.
+    - Vorteile: Galvanische Trennung, geringe elektromagnetische Störbeeinflussung.
+    - **Keine Glasfaserübertragung**
+
+## 7.2.1 Leuchtdioden
+
+### 7.2.1.1 Einzelne Leuchtdioden
+
+- Ansteuerung: Ein einfacher Port-Pin eines Mikrocontrollers ist ausreichend.
+    - High-Aktiv: Leuchtdiode leuchtet bei High-Signal.
+    - Low-Aktiv: Leuchtdiode leuchtet bei Low-Signal; meist besser geeignet, da Digitalausgänge bei Low-Pegel mehr Strom aufnehmen können.
+- Durchlassspannung: Unterschiedlich je nach Farbe der LED.
+    - Blaue LEDs: Oft über 3 V Durchlassspannung, problematisch bei Mikrocontrollern mit 3 V Versorgung.
+    - Weiße LEDs: Enthalten blaue LED-Chips.
+    - True-Green LEDs: Verhalten sich wie blaue LEDs.
+
+![LED Ansteuerung](<Bilder/7.2.1 LED Ansteuerung.png>)
+
+### 7.2.1.2 Gruppierte Leuchtdioden
+- **Einfache Matrix:** LEDs in einer gemultiplexten Matrix ansteuern.
+    - Multiplexing: LEDs leuchten nur kurzzeitig --> Strom muss ausreichend hoch sein, um eine ausreichende Helligkeit zu erzeugen.
+    - Kurzzeitige Ströme: Manche Matrix-LEDs vertragen Ströme von einigen Ampere.
+
+![LED Matrix](<Bilder/7.2.1.2 LED Matrix.png>)
+
+- **7-Segment-Anzeigen:** Häufige Anordnung von gruppierten LEDs; zwei Ausführungen *(gemeinsame Kathode/Anode)*:
+    - Gemeinsame Kathode: Kathoden aller Segmente sind verbunden.
+    - Gemeinsame Anode: Anoden aller Segmente sind verbunden.
+    - Ansteuerung: Transistoren müssen die Ausgangspins des Mikrocontrollers verstärken.
+    - Versorgung: Mikrocontroller und LEDs müssen die gleiche Versorgungsspannung haben, wenn Variante mit gemeinsamer Anode verwendet wird.
+
+![7-Segment-Anzeige-Arten](<Bilder/7.2.1.2 7-Segment-Anzeige-Arten.png>)
+
+![7-Segment-Mehrstellig](<Bilder/7.2.1.2 7-Segment-Mehrstellig.png>)
+
+## 7.2.2 LC-Anzeigen
+### 7.2.2.1 Grundprinzip
+
+- **Flüssigkristall-Anzeigen (LCD):** Flüssigkristalle beeinflussen die Polarisationsrichtung von Licht.
+    - TN-Zelle (Twisted Nematic): Grundprinzip der LCDs.
+        - Polfilter: Licht wird durch Polfilter polarisiert. *(50% Helligkeitsverlust)*
+        - Flüssigkristalle: Zwischen zwei Glasscheiben; drehen die Polarisationsebene des Lichts.
+        - Spannungsanwendung: Zerstört die schraubenförmige Anordnung der Kristalle, blockiert Licht.
+    - Hintergrundbeleuchtung: Früher Kaltkathodenleuchtstofflampen, jetzt weiße LEDs.
+        - Farbige Darstellung: Farbfilter reduzieren Wirkungsgrad, neuere Technologien verbessern Farbdarstellung.
+        - QLED: Nutzung von Quantenpunkten für bessere Farbdarstellung und Wirkungsgrad.
+
+![TN-Zelle](<Bilder/7.2.2.1 TN-Zelle.png>)
+
+### 7.2.2.2 Passive LCDs
+- Einfach: Keine farbige Darstellung, nur Ein/Aus Zustände.
+    - Ansteuerung: Jeder Pin führt zu einem Segment, direkt gegenüber einem Backplanesignal.
+        - Backplanesignale: Mehrere für große Segmentgruppen.
+    - Gleichspannung: Nicht dauerhaft anlegen, da es zu irreversiblen elektrochemischen Prozessen führt.
+        - AC-Signal: Pulsierende Gleichspannung, max. 1 kHz, erzeugt eine echte Wechselspannung für die Segmente.
+
+![LCD-AC-Signal](<Bilder/7.2.2.2 LCD-AC-Signal.png>)
+
+### 7.2.2.3 LCDs mit integrierter Ansteuerung
+- **Aktive LCDs:** Viele Typen; HD44780-Interface *(von Hitachi)* weit verbreitet. 
+    - Controller: 4-Bit-Modus benötigt 7 Leitungen.
+    - Kontrast: Einstellbare negative Spannung für die Kontrastleitung, oft durch eine Ladungspumpe erzeugt.
+    - Grafische LCD-Module: Serielle SPI-Schnittstelle hat sich durchgesetzt.
+
+![LCD-Controller](<Bilder/7.2.2.2 LCD-Controller.png>)
 
 
-## 7.2.1
-## 7.2.2
-## 7.3.3
-## 7.4.2.4
+
+## 7.3.3 DVI *(Digital Visual Interface)*
+- **Motivation für DVI (Digital Visual Interface):**
+    - Ende der 1990er Jahre kamen Flachbildschirme auf dem Markt --> Ansteuerung mit VGA-Signalen umständlich.
+    - Elektronik in Flachbildschirmen benötigte digitale Bilddaten.
+    - VGA-Signale mussten digitalisiert werden, was zu Qualitätsverlusten führte.
+
+- **Eigenschaften von DVI:**
+    - Synchrone, symetrische Übertragung mittels 6 differenziellen Signalen (TDMS-Links). *(**T**ransition **D**ifferential **M**inimized **S**ignaling)*
+    - Übertragung bis zu 10m.
+    - Synchrones Clock-Signal wird symmetrisch mitübertragen.
+    - Single-Link (3 TDMS-Signale) und Dual-Link-Verbindungen (6 TDMS-Signale) für höhere Auflösungen. *(bis zu 7,44Gbit/s)*
+    - Rückwärtskompatibilität: Übertragung von 4 analogen Signalen (RGB+H-Sync) möglich.
+
+![DVI-Ausführungen](<Bilder/7.3.3 DVI-Ausführungen.png>)
+### **Wichtig**
+![Gleichanteilsfreie Übertragung](<Bilder/7.3.3 Gleichanteilsfreie Übertragung.png>)
+
+## 7.4.2.4 GPU in CPU integriert
+
+- **Frühe Integration von Grafik in die CPU:**
+    - Versuch, DRAM-Speicher für Grafikausgabe einzusparen.
+    - Ein Teil des Hauptspeichers wurde als Bildspeicher verwendet.
+    - Einige Rechnerentwürfe in den 1990er Jahren verwendeten externe Grafikkontroller.
+    - Pixeldaten wurden über den Systembus geleitet, was die Systeme stark ausbremste.
+
+![Pixel im Hauptspeicher](<Bilder/7.4.2.4 Pixel im Hauptspeicher.png>)
+
+- **Entwicklung bis zur modernen Integration:**
+    - Mit zunehmender Integration von Cache-Speichern in CPUs und mehrkanaligen DRAM-Speicherinterfaces ist die separate Nutzung von Speicher für Grafikzwecke obsolet geworden.
+
+![CPU GPU RAM](<Bilder/7.4.2.4 CPU GPU RAM.png>)
+
+- **Integration von Grafikbeschleunigungsfunktionen:**
+    - Ab etwa 2010 wurden alle benötigten Beschleunigungsfunktionen in den Chip der Haupt-CPU integriert (z. B. Intel HD Graphics, Intel Graphics Media Accelerator).
+    - Die Leistung der integrierten 3D-Funktionen ist im Vergleich zu externen Grafiksystemen mit eigenem Speicher weniger stark.
