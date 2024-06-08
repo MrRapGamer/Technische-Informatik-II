@@ -325,14 +325,136 @@ Cachlines von 64 Bytes und übertragen Bursts jetzt mit 8 Zugriffen direkt hin
 
 ![RAS-CAS-Adressierung](<Bilder/5.2.2.1 RAS-CAS-Adressierung.png>)
 
+- **Parallelschalten der Adressierungseingänge**
+    - Je nach Anzahl der nach außen geführten Datenleitungen werden nur ein Teil des selektierten Datenworts vom CAS-Adressdecoder ausgewählt.
+    - Früher wurden oft nur ein einzelnes Bit selektiert, während moderne DRAM-Bausteine normalerweise 4-Bit-Daten herausführen.
+
+- **Buffered/Registered RAM**
+    - Beim Parallelschalten der Adressierungseingänge kann es zu einer Überlastung des Adressbusses kommen.- Um dies zu verhindern, werden zusätzliche Buffer vor die Adressleitungen der Bausteine geschaltet.
+    - Wenn ein Zwischenspeicher (Latch) für die Adresse vorhanden ist, spricht man vom Registered-RAM.
+
+![Buffered-RAM](<Bilder/5.2.2.1 Buffered-RAM.png>)
 
 
 
+## 5.2.2.3 SDRAM *(Synchronous Dynamic Random Access Memory)*
 
-## 5.2.2.3
-## 5.3.4.6
-## 6.3.2.4
-## 6.3.8.4
+- **Einführung eines gemeinsamen Taktsignals**
+    - Vor dem Jahr 2000: Speicherzugriffe erfolgten asynchron.
+    - Ab SDRAM: Alle Steuersignale beziehen sich auf ein gemeinsames Taktsignal. Dies synchronisiert den gesamten RAM-Baustein.
+
+- **Vorteile durch Burst-Modus**
+    - Moderne Prozessoren nutzen den Burst-Modus für Speicherzugriffe, bei dem mindestens 16 Bytes direkt hintereinander gelesen oder geschrieben werden.
+
+-   **Optimierungen innerhalb von SDRAM:** *--> führt zu ca. einer Verdoppelung der Datenrate*
+    - Pipelining: Mehrere Befehle werden gleichzeitig verarbeitet, indem sie in verschiedene Phasen zerlegt werden.
+    - Vervielfachung der Speicherbänke: Erhöhung der Anzahl der unabhängigen Speicherbänke, die gleichzeitig arbeiten können.
+    - Mehrere Buffer: Zwischenspeicher innerhalb des RAM-Bausteins verbessern die Zugriffsgeschwindigkeit.
+
+![SDRAM](<Bilder/5.2.2.3 SDRAM.png>)
+
+
+- **Struktur von SDRAM**
+
+- *Bankauswahl und Zugriffsoptimierung*
+    - Bank-Select Leitungen: Zwei zusätzliche Leitungen (BA0, BA1) ermöglichen die direkte Auswahl von vier separaten Speicherbereichen.
+    - Diese Struktur ermöglicht schnelle Zugriffe, ohne die RAS- oder CAS-Adresse ändern zu müssen.
+- *CAS-Latency (CL)*
+    - **Definition:** Die Zeitverzögerung in Takten zwischen dem Anfordern und Bereitstellen von Daten.
+    - *Beispiel:*
+        - Übertragungsrate: 1333 MByte/s bei 64 Bit Busbreite.
+        - Taktfrequenz: 1333/8 = 166 MHz (8 Byte werden gleichzeitig übertragen).
+        - CL = 10: Der Speichercontroller muss 10 Takte warten, bis das RAM-Modul bereit ist.
+        - Max. wahlfreie Zugriffsfrequenz: ca. 16,6 MHz.
+
+
+## 5.3.4.6 3D-NAND-Flash
+
+- **Problem:**
+    - Die Menge der unterscheidbaren Elektronen kann nicht weiter verringert werden kann, ohne mehr Fehler zu verursachen. Dies bedeutet, dass die Integrationsdichte nicht weiter gesteigert werden kann.  
+     --> Die Speicherdichte von Flash-Speichern stößt an physikalische Grenzen.
+
+- **Lösung:** *(Eintreten in die 3.te Dimension)*
+    - Die Speicherzellen werden nicht mehr nur in einer Ebene angeordnet, sondern auch in die Höhe gestapelt.
+    - Herstellung des Floating-Gate-Transistors aus Siliziumnitrid, das als Isolator dient. *(wird auch als Charge Trap bezeichnet)*
+
+- **Anmerkung:**
+    - Der Übergang vom Floating-Gate zum Charge Trap wurde schon bei 2D-NAND-Flash durchgeführt.  
+    `--> vereinfacht die Litographie bei der Fertigung stark.`
+
+
+![Charge Trap](<Bilder/5.3.4.6 Charge Trap.png>)
+
+## 6.3.2.4 RS485 - Schnittstelle
+
+- **Grundsätzliches**
+    - RS485 = Weiterentwicklung von RS422.
+    - Halbduplex-Betrieb: Daten können in beide Richtungen übertragen werden, aber nicht gleichzeitig.
+    - Bis zu 32 Teilnehmer an einem Bus. *(Mit speziellen Treibern bis zu 256 Teilnehmer)*
+
+- **Halbduplex-Betrieb**
+    - Sendeverstärker jedes Gerätes muss abschaltbar sein, um Kollisionen zu vermeiden.  
+    `--> Abschaltung erfolgt mittels Kommunikationsprotokolls.`
+
+![RS485 Verschaltung](<Bilder/6.3.2.4 RS485 Verschaltung.png>)
+
+- **Bezugsleitung**
+    - Theoretisch kein Stromfluss über GND-Bezugsleitung aufgrund gegenphasiger Signale
+    - Bezugsleitung könnte weggelassen werden *(Bezugspotenzial kann über Erdpotenzial realisiert werden)*
+    - Maximaler Gleichtaktfehler: -7 bis +12 V
+    - Bei großen Leitungslängen wird eine Bezugsleitung zur Vermeidung von Störungen empfohlen.
+- **Gleichtaktfehler**
+    - Differenzbildung der Signale verhinder Störungsanzeigen beim Empfänger
+
+![RS485 Gleichtaktfehler](<Bilder/6.3.2.4 RS485 Gleichtaktfehler.png>)
+
+- **Busabschluss**
+    - Mögliche Situation: kein aktiver Sender am Bus
+    - Einfacher Busabschluss (120 Ω-Widerstand): Leitung fällt auf undefinierten 0 V Pegel, wenn kein Sender aktiv ist
+    - **Lösung:** Failsafe-Busabschluss für definierten Pegel ohne aktive Sender
+
+![RS485 Busabschluss](<Bilder/6.3.2.4 RS485 Busabschluss.png>)
+
+- **Neuere Versionen**
+    - Absolutpegel spielt fast keine Rolle für Störabstand, nur Signaldifferenz relevant
+    - Moderne RS485-Bausteine verzichten auf negative Spannungskomponenten  
+    `--> Signale bewegen sich zwischen 0 V und +5 V`
+    - Vereinfachtes elektrisches Design, keine negativen Hilfsspannungen nötig
+    - Nur geringe Verschlechterung des Störabstands
+
+![RS485 Positive Pegel](<Bilder/6.3.2.4 RS485 Positive Pegel.png>)
+
+## 6.3.8.4 USB 3 *(Universal Serial Bus)*
+- Einführung: 2008
+- Änderungen zu USB 2:
+    - Neue Steckertyp mit zusätzlichen Daten-Leitungen
+    - Rückwärstkompatibel und Vorwärtskompatibel
+    - 5 zusätzliche Leitungen als 2 differenzielle Full-Duplex-Datenleitungen und eine Masseleitung
+    - Datenübertragungsraten von bis zu 5 GBit/s *(auch gennant Super-Speed-USB)*
+    - *TRIVIA:* Blaue Farbe für den Steckers
+    - Stromversorgung: Erhöhung von 0,5 A auf 0,9 A `--> Maximale Leistung jetzt 4,5 W`
+    - Maximale Kabellänge: 3 m
+
+![USB 3 Stecker](<Bilder/6.2.8.4 USB 3 Stecker.png>)
+
+![USB 3 Belegung](<Bilder/6.2.8.4 USB 3 Belegung.png>)
+
+- **USB 3.1**
+    - Neuer symmetrischer Steckertyp-C
+    - Host und Client mit demselben Steckertyp
+    - Kabel mit 24 Leitungen
+    - Effizientere Codierung vorher 8b10b-Code jetzt 128b132b-Code
+    - Höhere Übertragungsrate von bis zu 10 GBit/s
+    - Verschiedene Spannungen möglich
+    - Mehr elektrische Leistung möglich
+    - **Verringerung** der maximalen Kabellänge: 1 m
+
+- **USB 3.2**
+    - Definition von USB 3.2 im Jahr 2017
+    - Erhöhung der Übertragungsrate auf 20 GBit/s
+    - Verwendung von 2 Leitungen für 2x 10 GBit/s
+    - Kompatibilität mit USB 3.0 und USB 3.1
+
 ## 6.3.9.1
 ## 7.2.1
 ## 7.2.2
